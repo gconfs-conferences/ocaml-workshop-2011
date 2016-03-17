@@ -1,0 +1,60 @@
+\section{Intégration d'un espace de rendu OpenGL dans une fenêtre GTK}
+Lorsque vous souhaitez utilliser OpenGL dans un projet usillisant 
+LablGTK pour le fenêtrage, il n'existe qu'un chemin sûr à prentdre: le module GlGtk!
+\subsection{Ajout de l'espace de dessin dans notre fenêtre}
+Le widget qui servira d'espace de dessin est le widget {\bf area}
+du module {\bf GlGtk}. Il possède les même paramêtres que tous
+les widgets de LablGtk, avec en plus des flags d'initialisation de
+l'environnement d'OpenGL: le format des couleurs, le double buffering,
+etc...\\
+Par exemple, vous pouvez inisialliser votre widget de la manière suivante:
+
+\begin{lstlisting}
+(* Some code before *)
+let glWindow = GlGtk.area
+		~width:500
+		~height:300
+		~packing:fenetre#add
+		~show:true
+		[
+		'RGBA;
+		'DOUBLEBUFFER;
+		'BUFFER_SIZE(8);
+		'DEPTH_SIZE(16)
+		]
+		()
+in
+(* Some code after  *)
+\end{lstlisting}
+\subsection{Dessiner un cube}
+Maintenent que vous avez la GlArea insérée dans votre fenêtre, il
+ne reste plus qu'à dessiner à l'intérieur.\\
+En realité, il n'y a pas grand chose à faire d'autre que des
+appels aux fonctions de LablGl. Toutefois, vous devez précéder 
+toutes vos séries d'appel aux fonctions de LablGl par l'appel
+à la procédure {\bf make\_current} disponible à travert votre
+objet de type GlGtk.area.\\
+
+De plus, il vous faudra remplacer l'appel au swap buffer de LablGl
+par la méthode {\bf swap\_buffers} de votre widget GlGtk.area.\\
+Ainsi, vous optiendrez un code ressemblant à ceci:\\
+
+\begin{lstlisting}
+(* GlGtk.area object has been created with the name: glWin *)
+let displayCube () =
+	glWin#make_current ();
+	(* Appel aux fonctions de LablGl *)
+	glWin#swap_buffers ()
+\end{lstlisting}
+
+Il ne vous reste plus qu'à dessiner un cube! (ou toute autre forme
+de votre choix...).
+\subsection{La souris dans votre espace de dessin}
+	Il reste tout de même un problême! Comment faire pour
+	usilliser la souris dans votre widget area?\\
+	En fait, c'est impossible: le widget de dessin ne supporte
+	pas les entrée souris/clavier. C'est pour cela qu'il faut
+	trouver un moyen de contourner cela: utilliser une
+	{\bf event\_box} du module GBin et y insérer votre widget
+	{\bf GlGtk.area}.
+%\subsection{Modifier le Makefile}

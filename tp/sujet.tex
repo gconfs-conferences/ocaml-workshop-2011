@@ -1,0 +1,36 @@
+%Version en ligne
+\documentclass[12pt,a4paper]{report}
+%Version imprimable
+%\documentclass[12pt,a4paper,twoside,openright]{report}
+
+\input{config}
+
+\begin{document}
+
+\title{
+  \vspace{1cm}
+  \textbf{\Huge{\Tp{} \workshoptitle}}\\
+  %\vspace{1cm}
+  %\includegraphics[scale=0.75]{images/logo.png}
+}
+\author{
+  \Large{Sébastien \textit{AzrYel} \textsc{Crozet} ({\ttfamily crozet\_s})}\\\\
+}
+
+\date{
+  \vspace{1cm}
+  % GConfs logo
+  \includegraphics[scale=0.5]{\baserelTPpath/images/gconfs.png}\\
+  \vspace{0.5cm}
+  Day xx Month 201x
+}
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+% beginning of document
+\include{S_lablgtk}
+\include{S_glgtk}
+
+% end of document
+\end{document}
